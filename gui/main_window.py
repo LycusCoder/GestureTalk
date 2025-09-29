@@ -415,7 +415,8 @@ class GestureTalkMainWindow:
             self.root.after(0, self._update_system_status)
             
         except Exception as e:
-            self.root.after(0, lambda: messagebox.showerror("System Error", f"System initialization failed: {e}"))
+            error_msg = str(e)
+            self.root.after(0, lambda: messagebox.showerror("System Error", f"System initialization failed: {error_msg}"))
     
     def _update_system_status(self):
         """Update system status display"""
