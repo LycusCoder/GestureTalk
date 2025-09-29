@@ -1,0 +1,50 @@
+# 1. PYTHON BYTECODE / CACHE (Wajib)
+# File hasil kompilasi Python, nggak perlu di-track
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.ipynb_checkpoints/ # Jika kamu pakai Jupyter Notebook
+
+# 2. LOG FILES
+# Log itu cuma buat debugging lokal, jangan masukkan ke Git
+*.log
+gesturetalk.log
+logs/ # Kamu punya folder 'logs' yang masih kosong, tapi jaga-jaga.
+
+# 3. ENVIRONMENT & DEPENDENCIES
+# Folder Conda/Virtual Environment (meskipun kamu ada di folder project, ini penting)
+.venv/
+env/
+venv/
+# Conda-specific
+conda-meta/
+.conda/
+.DS_Store # (Mac OS file)
+*~ # (Temporary files)
+
+# 4. DATA MODEL & TRAINING ASSETS (Penting untuk ML/AI)
+# Hasil training model biasanya besar dan bisa diregenerasi
+# Hanya masukkan model-model yang sifatnya final dan kecil.
+# Karena kamu pakai PKL (yang cepat dibuat ulang), sebaiknya diabaikan.
+models/
+!models/.gitkeep # (Opsional: Kalau mau keep folder 'models' tapi isinya diabaikan)
+*.pkl # Semua file model Pickle
+*.sav
+*.h5 # Jika kamu pakai Keras/TensorFlow
+gesture_model.pkl
+gesture_model_RandomForest_*.pkl
+
+# 5. DATASET LOKAL
+# Dataset mentah yang kamu gunakan untuk melatih model. 
+# Walaupun 'gestures.csv' terlihat kecil, biasanya file data mentah diabaikan.
+# Kalau gestures.csv itu file kunci yang kecil, kamu bisa hapus baris di bawah ini.
+# Tapi karena ini ML project, kita asumsikan dataset bisa besar.
+data/
+!data/README.md # (Opsional: Kalau kamu mau ada README di dalam folder data)
+
+# 6. CONFIGURASI SENSITIF & TEMPORARY
+# Contoh: Jika kamu pakai file .env untuk API keys
+.env
+.secret
+*.tmp

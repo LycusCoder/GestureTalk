@@ -36,8 +36,8 @@ class GestureModelTrainer:
     """
     
     def __init__(self, 
-                 data_file: str = '/app/data/gestures.csv',
-                 model_output_dir: str = '/app/models/'):
+                 data_file: str = 'home/Nourivex/AIProject/GestureTalk/data/gestures.csv',
+                 model_output_dir: str = 'home/Nourivex/AIProject/GestureTalk/models/'):
         """
         Initialize GestureModelTrainer
         
@@ -527,10 +527,10 @@ def main():
     """Main function dengan CLI interface"""
     parser = argparse.ArgumentParser(description='Gesture Recognition Model Training')
     parser.add_argument('--data', '-d',
-                       default='/app/data/gestures.csv',
+                       default='home/Nourivex/AIProject/GestureTalk/data/gestures.csv',
                        help='Path to training data CSV file')
     parser.add_argument('--output', '-o',
-                       default='/app/models/',
+                       default='home/Nourivex/AIProject/GestureTalk/models/',
                        help='Output directory for trained model')
     parser.add_argument('--test-size', '-t',
                        type=float, default=0.2,

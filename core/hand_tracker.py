@@ -254,7 +254,7 @@ def test_hand_tracker():
             if key == 27:  # ESC key
                 break
             elif key == 32:  # SPACE key - take screenshot
-                cv2.imwrite(f'/app/hand_screenshot_{int(time.time())}.jpg', display_frame)
+                cv2.imwrite(f'home/Nourivex/AIProject/GestureTalk/hand_screenshot_{int(time.time())}.jpg', display_frame)
                 print("📸 Screenshot saved!")
     
     except KeyboardInterrupt:
