@@ -31,7 +31,7 @@ class GestureDataCollector:
     - Progress tracking dan statistics
     """
     
-    def __init__(self, output_file: str = '/app/GestureTalk/data/gestures.csv'):
+    def __init__(self, output_file: str = '/app/data/gestures.csv'):
         """
         Initialize GestureDataCollector
         
