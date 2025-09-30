@@ -36,8 +36,8 @@ class GestureModelTrainer:
     """
     
     def __init__(self, 
-                 data_file: str = '/app/GestureTalk/data/gestures.csv',
-                 model_output_dir: str = '/app/GestureTalk/models/'):
+                 data_file: str = '/app/data/gestures.csv',
+                 model_output_dir: str = '/app/models/'):
         """
         Initialize GestureModelTrainer
         
