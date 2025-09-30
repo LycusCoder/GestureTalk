@@ -530,7 +530,7 @@ def main():
                        default='/app/data/gestures.csv',
                        help='Path to training data CSV file')
     parser.add_argument('--output', '-o',
-                       default='/app/GestureTalk/models/',
+                       default='/app/models/',
                        help='Output directory for trained model')
     parser.add_argument('--test-size', '-t',
                        type=float, default=0.2,
