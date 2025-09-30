@@ -516,7 +516,7 @@ def main():
     """Main function dengan argument parsing"""
     parser = argparse.ArgumentParser(description='Gesture Data Collection System')
     parser.add_argument('--output', '-o', 
-                       default='/app/GestureTalk/data/gestures.csv',
+                       default='/app/data/gestures.csv',
                        help='Output CSV file path')
     parser.add_argument('--samples', '-s', 
                        type=int, default=100,
