@@ -31,7 +31,7 @@ class GesturePredictor:
     """
     
     def __init__(self, 
-                 model_path: str = 'home/Nourivex/AIProject/GestureTalk/models/gesture_model.pkl',
+                 model_path: str = '/app/GestureTalk/models/gesture_model.pkl',
                  confidence_threshold: float = 0.6,
                  stability_window: int = 3):
         """
