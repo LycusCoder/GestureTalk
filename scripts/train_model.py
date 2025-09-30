@@ -527,7 +527,7 @@ def main():
     """Main function dengan CLI interface"""
     parser = argparse.ArgumentParser(description='Gesture Recognition Model Training')
     parser.add_argument('--data', '-d',
-                       default='/app/GestureTalk/data/gestures.csv',
+                       default='/app/data/gestures.csv',
                        help='Path to training data CSV file')
     parser.add_argument('--output', '-o',
                        default='/app/GestureTalk/models/',
