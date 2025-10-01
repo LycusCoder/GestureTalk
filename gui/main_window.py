@@ -244,6 +244,15 @@ class GestureTalkMainWindow:
         )
         self.confidence_display.pack(pady=5)
         
+        # Gender detection display
+        self.gender_display = ctk.CTkLabel(
+            gesture_frame,
+            text="Gender: Tidak diketahui (0.0%)",
+            font=ctk.CTkFont(size=14, weight="bold"),
+            text_color=("#9C27B0", "#E91E63")  # Purple colors
+        )
+        self.gender_display.pack(pady=5)
+        
         # Confidence progress bar
         self.confidence_progress = ctk.CTkProgressBar(
             gesture_frame,
