@@ -58,6 +58,8 @@ class GestureTalkMainWindow:
         self.current_gesture = "Tidak ada"
         self.current_confidence = 0.0
         self.gesture_history = []
+        self.current_gender = "Tidak diketahui"
+        self.current_gender_confidence = 0.0
         
         # Performance tracking
         self.fps_counter = 0
