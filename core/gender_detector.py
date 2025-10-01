@@ -213,16 +213,24 @@ class GenderDetector:
             nose_width = np.linalg.norm(nose_right - nose_left)
             features['nose_width_ratio'] = nose_width / face_width if face_width > 0 else 0
             
-            # 5. Eyebrow thickness (more stable than lip features)
-            left_eyebrow_top = landmarks[46]
-            left_eyebrow_bottom = landmarks[70]  # Below eyebrow
-            right_eyebrow_top = landmarks[276]
-            right_eyebrow_bottom = landmarks[300]  # Below eyebrow
-            
-            left_thickness = np.linalg.norm(left_eyebrow_top - left_eyebrow_bottom)
-            right_thickness = np.linalg.norm(right_eyebrow_top - right_eyebrow_bottom)
-            avg_thickness = (left_thickness + right_thickness) / 2
-            features['eyebrow_thickness'] = avg_thickness / face_height if face_height > 0 else 0
+            # 5. Eyebrow thickness estimation (use eye-to-eyebrow distance)
+            try:
+                left_eye_top = landmarks[159]  # Top of left eye
+                left_eyebrow = landmarks[46]   # Left eyebrow point
+                right_eye_top = landmarks[386] # Top of right eye  
+                right_eyebrow = landmarks[276] # Right eyebrow point
+                
+                left_eye_brow_dist = np.linalg.norm(left_eyebrow - left_eye_top)
+                right_eye_brow_dist = np.linalg.norm(right_eyebrow - right_eye_top)
+                avg_brow_distance = (left_eye_brow_dist + right_eye_brow_dist) / 2
+                
+                # Closer eyebrows to eyes = thicker/more prominent brows (masculine)
+                features['eyebrow_thickness'] = 1.0 / (avg_brow_distance + 0.001)  # Inverse relationship
+                features['eyebrow_thickness'] = features['eyebrow_thickness'] / 1000  # Normalize
+                
+            except (IndexError, KeyError):
+                # Fallback jika landmarks tidak tersedia
+                features['eyebrow_thickness'] = 0.02  # Default neutral value
             
         except (IndexError, ZeroDivisionError) as e:
             logger.warning(f"Error calculating features: {e}")
