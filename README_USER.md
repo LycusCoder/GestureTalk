@@ -54,11 +54,13 @@ python app.py
 - Status "Tangan Terdeteksi" akan muncul jika hand tracking aktif
 
 ### Langkah 4: Test Gender Detection  
-- **Posisikan wajah** dalam frame kamera
+- **Posisikan wajah** dalam frame kamera (frontal view optimal)
+- **Test stabilitas**: Coba buka/tutup mulut, senyum, bicara
 - Aplikasi akan mendeteksi dan menampilkan:
-  - **Gender classification** (Laki-laki/Perempuan)
-  - **Confidence level** dalam persentase
-  - **Bounding box** di sekitar wajah
+  - **Gender classification** (Laki-laki/Perempuan) - STABIL tidak berubah karena ekspresi
+  - **G-Confidence**: Confidence level dalam persentase
+  - **Stable**: Confidence dari filtered prediction (muncul setelah beberapa detik)
+  - **Bounding box** di sekitar wajah dengan color coding
 
 ### Langkah 5: Test Gesture Recognition
 - **Lakukan gesture** berikut untuk testing:
