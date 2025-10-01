@@ -598,28 +598,41 @@ class GestureTalkMainWindow:
                 print(f"❌ Video processing error: {e}")
                 time.sleep(0.1)
     
-    def _add_info_overlay(self, frame, gesture_name, confidence, hand_detected):
-        """Add informational overlay ke video frame"""
+    def _add_enhanced_info_overlay(self, frame, gesture_name, confidence, hand_detected, gender_name, gender_confidence, face_info):
+        """Add enhanced informational overlay dengan gender detection"""
         overlay = frame.copy()
         height, width = overlay.shape[:2]
         
-        # Background untuk text
-        cv2.rectangle(overlay, (10, 10), (400, 120), (0, 0, 0), -1)
+        # Background untuk text (lebih besar untuk gender info)
+        cv2.rectangle(overlay, (10, 10), (450, 160), (0, 0, 0), -1)
         overlay = cv2.addWeighted(frame, 0.7, overlay, 0.3, 0)
         
         # Gesture info
         cv2.putText(overlay, f"Gesture: {gesture_name}", (20, 40), 
                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
         
-        # Confidence
+        # Gesture confidence
         cv2.putText(overlay, f"Confidence: {confidence:.1%}", (20, 70), 
                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 0), 2)
         
+        # Gender detection
+        gender_color = (0, 255, 0) if gender_name == 'Laki-laki' else (255, 0, 255) if gender_name == 'Perempuan' else (128, 128, 128)
+        cv2.putText(overlay, f"Gender: {gender_name}", (20, 100), 
+                   cv2.FONT_HERSHEY_SIMPLEX, 0.6, gender_color, 2)
+        
+        # Gender confidence
+        cv2.putText(overlay, f"G-Confidence: {gender_confidence:.1%}", (20, 130), 
+                   cv2.FONT_HERSHEY_SIMPLEX, 0.5, gender_color, 2)
+        
         # Hand detection status
         status_text = "Tangan Terdeteksi" if hand_detected else "Tidak Ada Tangan"
-        color = (0, 255, 0) if hand_detected else (0, 0, 255)
-        cv2.putText(overlay, status_text, (20, 100), 
-                   cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+        hand_color = (0, 255, 0) if hand_detected else (0, 0, 255)
+        cv2.putText(overlay, status_text, (250, 40), 
+                   cv2.FONT_HERSHEY_SIMPLEX, 0.5, hand_color, 2)
+        
+        # Draw gender detection box jika ada face
+        if face_info and self.gender_detector:
+            overlay = self.gender_detector.draw_gender_info(overlay, face_info, gender_name, gender_confidence)
         
         return overlay
     
