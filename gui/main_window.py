@@ -582,7 +582,7 @@ class GestureTalkMainWindow:
                 )
                 
                 # Update GUI dengan frame baru
-                self.root.after(0, self._update_video_display, display_frame, gesture_name, confidence)
+                self.root.after(0, self._update_video_display, display_frame, gesture_name, confidence, gender_name, gender_confidence)
                 
                 # TTS untuk gesture yang terdeteksi
                 if gesture_name and gesture_name not in ["Tidak ada", "Tidak dikenali"] and confidence > 0.7:
