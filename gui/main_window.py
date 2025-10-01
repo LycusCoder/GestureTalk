@@ -417,8 +417,13 @@ class GestureTalkMainWindow:
                 volume=0.9
             )
             
-            # Start TTS service
-            self.tts_handler.start_speech_service()
+            # Start TTS service (with error handling)
+            try:
+                if self.tts_handler:
+                    self.tts_handler.start_speech_service()
+            except Exception as e:
+                print(f"⚠️  TTS initialization failed: {e}")
+                self.tts_handler = None
             
             # Initialize gesture predictor
             self.gesture_predictor = GesturePredictor(
