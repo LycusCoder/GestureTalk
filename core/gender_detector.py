@@ -234,8 +234,14 @@ class GenderDetector:
             
         except (IndexError, ZeroDivisionError) as e:
             logger.warning(f"Error calculating features: {e}")
-            # Return default features
-            features = {key: 0.5 for key in self.GENDER_RULES.keys()}
+            # Return default neutral features
+            features = {
+                'jawline_width_ratio': 0.85,
+                'face_width_height_ratio': 0.78, 
+                'eye_distance_ratio': 0.43,
+                'nose_width_ratio': 0.24,
+                'eyebrow_thickness': 0.025
+            }
         
         return features
     
