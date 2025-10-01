@@ -16,11 +16,13 @@ python app.py
 - **Enhanced bone connections** untuk menampilkan struktur tangan yang detail
 - **Stabilized tracking** untuk pergerakan yang smooth
 
-### 2. 👤 Gender Detection
+### 2. 👤 Gender Detection (Improved Stability)
 - **Face-based gender classification** menggunakan MediaPipe
 - **Real-time detection** dengan confidence scoring
-- **Gender classification**: Laki-laki, Perempuan, Tidak dapat ditentukan
-- **Visual feedback** dengan bounding box dan label
+- **Stable prediction system** - tidak terpengaruh ekspresi wajah (mulut buka/tutup)
+- **Weighted feature analysis** - jawline, face shape, eye distance, nose width
+- **Temporal filtering** - menggunakan 10 deteksi terakhir untuk stabilitas
+- **Visual feedback** dengan bounding box dan confidence score
 
 ### 3. 🤖 Gesture Recognition  
 - **5 gesture types**: tolong, halo, terima_kasih, ya, tidak
