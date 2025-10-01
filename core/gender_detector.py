@@ -178,40 +178,42 @@ class GenderDetector:
         features = {}
         
         try:
-            # 1. Jawline width ratio (jaw width / face height)
+            # 1. Jawline width ratio (jaw width / face height) - Strong male indicator
             jaw_left = landmarks[172]  # Left jaw point
             jaw_right = landmarks[397]  # Right jaw point
             face_top = landmarks[10]   # Face top
-            face_bottom = landmarks[152]  # Face bottom
+            face_bottom = landmarks[152]  # Face bottom (chin)
             
             jaw_width = np.linalg.norm(jaw_right - jaw_left)
             face_height = np.linalg.norm(face_bottom - face_top)
             features['jawline_width_ratio'] = jaw_width / face_height if face_height > 0 else 0
             
-            # 2. Forehead height ratio (forehead height / face height)
-            forehead_top = landmarks[10]
-            eyebrow_center = landmarks[9]
-            forehead_height = np.linalg.norm(forehead_top - eyebrow_center)
-            features['forehead_height_ratio'] = forehead_height / face_height if face_height > 0 else 0
+            # 2. Face width to height ratio (more stable than forehead alone)
+            face_width = jaw_width
+            features['face_width_height_ratio'] = face_width / face_height if face_height > 0 else 0
             
             # 3. Eye distance ratio (inter-eye distance / face width)
             left_eye_center = landmarks[33]
             right_eye_center = landmarks[263]
             eye_distance = np.linalg.norm(right_eye_center - left_eye_center)
-            face_width = jaw_width
             features['eye_distance_ratio'] = eye_distance / face_width if face_width > 0 else 0
             
-            # 4. Nose width ratio (nose width / face width)
+            # 4. Nose width ratio (nose width / face width) 
             nose_left = landmarks[131]
             nose_right = landmarks[358]
             nose_width = np.linalg.norm(nose_right - nose_left)
             features['nose_width_ratio'] = nose_width / face_width if face_width > 0 else 0
             
-            # 5. Lip thickness ratio (lip thickness / face height)
-            lip_top = landmarks[13]
-            lip_bottom = landmarks[14]
-            lip_thickness = np.linalg.norm(lip_bottom - lip_top)
-            features['lip_thickness_ratio'] = lip_thickness / face_height if face_height > 0 else 0
+            # 5. Eyebrow thickness (more stable than lip features)
+            left_eyebrow_top = landmarks[46]
+            left_eyebrow_bottom = landmarks[70]  # Below eyebrow
+            right_eyebrow_top = landmarks[276]
+            right_eyebrow_bottom = landmarks[300]  # Below eyebrow
+            
+            left_thickness = np.linalg.norm(left_eyebrow_top - left_eyebrow_bottom)
+            right_thickness = np.linalg.norm(right_eyebrow_top - right_eyebrow_bottom)
+            avg_thickness = (left_thickness + right_thickness) / 2
+            features['eyebrow_thickness'] = avg_thickness / face_height if face_height > 0 else 0
             
         except (IndexError, ZeroDivisionError) as e:
             logger.warning(f"Error calculating features: {e}")
