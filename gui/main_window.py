@@ -426,6 +426,12 @@ class GestureTalkMainWindow:
                 stability_window=3
             )
             
+            # Initialize gender detector
+            self.gender_detector = GenderDetector(
+                min_detection_confidence=0.7,
+                min_tracking_confidence=0.5
+            )
+            
             # Update GUI status
             self.root.after(0, self._update_system_status)
             
