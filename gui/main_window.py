@@ -754,6 +754,9 @@ class GestureTalkMainWindow:
             if self.tts_handler:
                 self.tts_handler.cleanup()
             
+            if self.gender_detector:
+                self.gender_detector.cleanup()
+            
             print("✅ Application cleanup completed")
             
         except Exception as e:
