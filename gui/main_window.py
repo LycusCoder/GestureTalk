@@ -410,17 +410,18 @@ class GestureTalkMainWindow:
                 resolution=(640, 480)
             )
             
-            # Initialize TTS handler
-            self.tts_handler = TTSHandler(
-                language='id',
-                rate=150,
-                volume=0.9
-            )
-            
-            # Start TTS service (with error handling)
+            # Initialize TTS handler (with comprehensive error handling)
             try:
+                self.tts_handler = TTSHandler(
+                    language='id',
+                    rate=150,
+                    volume=0.9
+                )
+                
+                # Start TTS service
                 if self.tts_handler:
                     self.tts_handler.start_speech_service()
+                    
             except Exception as e:
                 print(f"⚠️  TTS initialization failed: {e}")
                 self.tts_handler = None
