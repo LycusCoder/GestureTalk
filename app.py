@@ -134,14 +134,28 @@ def main():
         logger.info("🎨 Initializing GUI...")
         
         # Create dan run application
-        app = GestureTalkMainWindow()
-        
-        logger.info("✅ GestureTalk GUI ready")
-        print("\n🚀 Launching GestureTalk GUI...")
-        print("💡 Check the GUI window untuk mulai menggunakan aplikasi")
-        
-        # Run application
-        app.run()
+        try:
+            app = GestureTalkMainWindow()
+            
+            logger.info("✅ GestureTalk GUI ready")
+            print("\n🚀 Launching GestureTalk GUI...")
+            print("💡 Fitur yang tersedia:")
+            print("   🤚 Enhanced Hand Rigging - Real-time hand skeleton visualization")
+            print("   👤 Gender Detection - Face-based gender classification")  
+            print("   🤖 Gesture Recognition - 5 gesture types (tolong, halo, terima_kasih, ya, tidak)")
+            print("   🔊 Text-to-Speech - Indonesian voice synthesis")
+            print("\n▶️  Tekan 'Start Camera' di aplikasi untuk memulai deteksi")
+            
+            # Run application
+            app.run()
+            
+        except Exception as gui_error:
+            print(f"❌ GUI Error: {gui_error}")
+            print("\n🔧 Fallback: Running component tests...")
+            
+            # Fallback ke component testing jika GUI gagal
+            import subprocess
+            subprocess.run([sys.executable, "test_components.py"], cwd=str(ROOT_DIR))
         
         logger.info("👋 GestureTalk application closed")
         return 0
