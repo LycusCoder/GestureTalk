@@ -330,7 +330,7 @@ class GenderDetector:
     
     def get_stable_prediction(self) -> Tuple[Optional[str], float]:
         """
-        Get stable gender prediction berdasarkan recent detections
+        Get stable gender prediction dengan weighted history analysis
         
         Returns:
             Tuple[gender, confidence]: Stable prediction
@@ -338,29 +338,41 @@ class GenderDetector:
         if not self.detection_history:
             return None, 0.0
         
-        # Count recent predictions
-        recent_detections = self.detection_history[-5:]  # Last 5 detections
-        gender_counts = {}
-        total_confidence = 0.0
+        # Use longer history for more stability (last 10 detections)
+        recent_detections = self.detection_history[-10:]
+        gender_weighted_scores = {}
         
-        for detection in recent_detections:
+        # Weight recent detections more heavily
+        for i, detection in enumerate(recent_detections):
             gender = detection['gender']
             confidence = detection['confidence']
             
-            if gender not in gender_counts:
-                gender_counts[gender] = {'count': 0, 'total_confidence': 0.0}
+            # Recent detections get higher weight (exponential decay)
+            time_weight = 0.5 + (i / len(recent_detections)) * 0.5  # 0.5 to 1.0
+            weighted_score = confidence * time_weight
             
-            gender_counts[gender]['count'] += 1
-            gender_counts[gender]['total_confidence'] += confidence
-            total_confidence += confidence
+            if gender not in gender_weighted_scores:
+                gender_weighted_scores[gender] = {'score': 0.0, 'count': 0}
+            
+            gender_weighted_scores[gender]['score'] += weighted_score
+            gender_weighted_scores[gender]['count'] += 1
         
-        # Get most frequent gender
-        if gender_counts:
-            best_gender = max(gender_counts.keys(), 
-                            key=lambda g: gender_counts[g]['count'])
-            best_confidence = gender_counts[best_gender]['total_confidence'] / gender_counts[best_gender]['count']
+        # Find gender with highest weighted score dan sufficient consistency
+        if gender_weighted_scores:
+            best_gender = None
+            best_score = 0.0
             
-            return best_gender, best_confidence
+            for gender, data in gender_weighted_scores.items():
+                avg_score = data['score'] / data['count']
+                consistency = data['count'] / len(recent_detections)
+                
+                # Require at least 60% consistency untuk stable prediction
+                if consistency >= 0.6 and avg_score > best_score:
+                    best_gender = gender
+                    best_score = avg_score
+            
+            if best_gender:
+                return best_gender, min(0.95, best_score)
         
         return None, 0.0
     
