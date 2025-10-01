@@ -137,22 +137,31 @@ class GenderDetector:
         # Calculate gender features
         features = self._calculate_gender_features(face_landmarks, frame.shape)
         
-        # Classify gender
-        gender, confidence = self._classify_gender(features)
+        # Classify gender (raw prediction)
+        raw_gender, raw_confidence = self._classify_gender(features)
+        
+        # Update tracking dengan raw prediction
+        self._update_detection_history(raw_gender, raw_confidence)
+        self.detection_count += 1
+        
+        # Get stable prediction (filtered)
+        stable_gender, stable_confidence = self.get_stable_prediction()
+        
+        # Use stable prediction jika available, otherwise use raw
+        final_gender = stable_gender if stable_gender else raw_gender
+        final_confidence = stable_confidence if stable_gender else raw_confidence
         
         # Face info untuk visualization
         face_info = {
             'detection': face_detection,
             'landmarks': face_landmarks,
             'features': features,
-            'bbox': self._get_face_bbox(face_detection, frame.shape)
+            'bbox': self._get_face_bbox(face_detection, frame.shape),
+            'raw_prediction': (raw_gender, raw_confidence),
+            'stable_prediction': (stable_gender, stable_confidence)
         }
         
-        # Update tracking
-        self._update_detection_history(gender, confidence)
-        self.detection_count += 1
-        
-        return gender, confidence, face_info
+        return final_gender, final_confidence, face_info
     
     def _calculate_gender_features(self, face_landmarks, frame_shape) -> Dict[str, float]:
         """
