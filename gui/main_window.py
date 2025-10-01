@@ -397,10 +397,11 @@ class GestureTalkMainWindow:
     def _init_systems_worker(self):
         """Worker thread untuk system initialization"""
         try:
-            # Initialize hand tracker
-            self.hand_tracker = HandTracker(
+            # Initialize enhanced hand tracker untuk better rigging
+            self.hand_tracker = EnhancedHandTracker(
                 min_detection_confidence=0.7,
-                min_tracking_confidence=0.5
+                min_tracking_confidence=0.5,
+                visualization_mode='full'  # Full rigging visualization
             )
             
             # Initialize camera handler
