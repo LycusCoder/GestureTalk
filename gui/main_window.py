@@ -610,7 +610,7 @@ class GestureTalkMainWindow:
         height, width = overlay.shape[:2]
         
         # Background untuk text (lebih besar untuk gender info)
-        cv2.rectangle(overlay, (10, 10), (450, 160), (0, 0, 0), -1)
+        cv2.rectangle(overlay, (10, 10), (450, 170), (0, 0, 0), -1)
         overlay = cv2.addWeighted(frame, 0.7, overlay, 0.3, 0)
         
         # Gesture info
