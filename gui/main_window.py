@@ -636,8 +636,8 @@ class GestureTalkMainWindow:
         
         return overlay
     
-    def _update_video_display(self, frame, gesture_name, confidence):
-        """Update video display di GUI"""
+    def _update_video_display(self, frame, gesture_name, confidence, gender_name, gender_confidence):
+        """Update video display di GUI dengan gender info"""
         try:
             # Convert frame ke format yang bisa ditampilkan di tkinter
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -652,6 +652,13 @@ class GestureTalkMainWindow:
             self.gesture_display.configure(text=f"Gesture: {gesture_name}")
             self.confidence_display.configure(text=f"Confidence: {confidence:.1%}")
             self.confidence_progress.set(confidence)
+            
+            # Update gender display
+            self.gender_display.configure(text=f"Gender: {gender_name} ({gender_confidence:.1%})")
+            
+            # Store current values
+            self.current_gender = gender_name
+            self.current_gender_confidence = gender_confidence
             
             # Update gesture history
             self._update_gesture_history(gesture_name, confidence)
