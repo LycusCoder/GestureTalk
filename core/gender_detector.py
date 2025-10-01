@@ -224,7 +224,7 @@ class GenderDetector:
     
     def _classify_gender(self, features: Dict[str, float]) -> Tuple[str, float]:
         """
-        Classify gender berdasarkan calculated features
+        Classify gender berdasarkan weighted features (improved stability)
         
         Args:
             features: Calculated facial features
@@ -232,58 +232,72 @@ class GenderDetector:
         Returns:
             Tuple[gender, confidence]: Gender prediction dengan confidence
         """
-        male_score = 0
-        female_score = 0
-        total_features = len(self.GENDER_RULES)
+        male_score = 0.0
+        female_score = 0.0
+        total_weight = 0.0
         
-        # Score berdasarkan each feature
-        for feature_name, threshold in self.GENDER_RULES.items():
+        # Weighted scoring berdasarkan each feature
+        for feature_name, rule in self.GENDER_RULES.items():
+            threshold = rule['threshold']
+            weight = rule['weight']
             feature_value = features.get(feature_name, 0.5)
             
+            total_weight += weight
+            
             if feature_name == 'jawline_width_ratio':
+                # Wider jaw = more masculine
                 if feature_value > threshold:
-                    male_score += 1
+                    male_score += weight
                 else:
-                    female_score += 1
+                    female_score += weight
                     
-            elif feature_name == 'forehead_height_ratio':
-                if feature_value < threshold:
-                    male_score += 1
+            elif feature_name == 'face_width_height_ratio':
+                # Wider face relative to height = more masculine
+                if feature_value > threshold:
+                    male_score += weight
                 else:
-                    female_score += 1
+                    female_score += weight
                     
             elif feature_name == 'eye_distance_ratio':
+                # Closer eyes relative to face = more masculine
                 if feature_value < threshold:
-                    male_score += 1
+                    male_score += weight
                 else:
-                    female_score += 1
+                    female_score += weight
                     
             elif feature_name == 'nose_width_ratio':
+                # Wider nose relative to face = more masculine
                 if feature_value > threshold:
-                    male_score += 1
+                    male_score += weight
                 else:
-                    female_score += 1
+                    female_score += weight
                     
-            elif feature_name == 'lip_thickness_ratio':
-                if feature_value < threshold:
-                    male_score += 1
+            elif feature_name == 'eyebrow_thickness':
+                # Thicker eyebrows = more masculine
+                if feature_value > threshold:
+                    male_score += weight
                 else:
-                    female_score += 1
+                    female_score += weight
         
-        # Determine gender dan confidence
+        # Calculate weighted confidence
         if male_score > female_score:
             gender = 'Laki-laki'
-            confidence = male_score / total_features
+            confidence = male_score / total_weight
         elif female_score > male_score:
-            gender = 'Perempuan'
-            confidence = female_score / total_features
+            gender = 'Perempuan'  
+            confidence = female_score / total_weight
         else:
-            # Tie - use default atau previous detection
-            gender = 'Tidak dapat ditentukan'
-            confidence = 0.5
+            # Very close - lean towards previous stable prediction
+            stable_prediction = self.get_stable_prediction()
+            if stable_prediction[0]:
+                gender = stable_prediction[0]
+                confidence = 0.6
+            else:
+                gender = 'Tidak dapat ditentukan'
+                confidence = 0.5
         
-        # Adjust confidence (make it more realistic)
-        confidence = min(0.9, max(0.6, confidence))
+        # Normalize confidence to reasonable range
+        confidence = min(0.92, max(0.55, confidence))
         
         return gender, confidence
     
