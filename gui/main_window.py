@@ -550,7 +550,7 @@ class GestureTalkMainWindow:
                     time.sleep(0.01)
                     continue
                 
-                # Process frame dengan hand tracker
+                # Process frame dengan enhanced hand tracker
                 processed_frame, landmarks = self.hand_tracker.process_frame(frame)
                 
                 # Gesture prediction jika ada landmarks
@@ -564,8 +564,22 @@ class GestureTalkMainWindow:
                         gesture_name = "Tidak dikenali"
                         confidence = 0.0
                 
-                # Add info overlay ke frame
-                display_frame = self._add_info_overlay(processed_frame, gesture_name, confidence, landmarks is not None)
+                # Gender detection
+                gender_name = "Tidak diketahui"
+                gender_confidence = 0.0
+                face_info = None
+                
+                if self.gender_detector:
+                    gender_name, gender_confidence, face_info = self.gender_detector.detect_gender(frame)
+                    if gender_name is None:
+                        gender_name = "Tidak diketahui"
+                        gender_confidence = 0.0
+                
+                # Add enhanced info overlay ke frame
+                display_frame = self._add_enhanced_info_overlay(
+                    processed_frame, gesture_name, confidence, landmarks is not None,
+                    gender_name, gender_confidence, face_info
+                )
                 
                 # Update GUI dengan frame baru
                 self.root.after(0, self._update_video_display, display_frame, gesture_name, confidence)
