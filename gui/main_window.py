@@ -69,6 +69,7 @@ class GestureTalkMainWindow:
         self.camera_handler = None
         self.tts_handler = None
         self.gesture_predictor = None
+        self.gender_detector = None
         
         # GUI components
         self.video_label = None
