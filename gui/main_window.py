@@ -621,13 +621,19 @@ class GestureTalkMainWindow:
         cv2.putText(overlay, f"Confidence: {confidence:.1%}", (20, 70), 
                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 0), 2)
         
-        # Gender detection
+        # Gender detection (improved display)
         gender_color = (0, 255, 0) if gender_name == 'Laki-laki' else (255, 0, 255) if gender_name == 'Perempuan' else (128, 128, 128)
         cv2.putText(overlay, f"Gender: {gender_name}", (20, 100), 
                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, gender_color, 2)
         
-        # Gender confidence
-        cv2.putText(overlay, f"G-Confidence: {gender_confidence:.1%}", (20, 130), 
+        # Gender confidence dengan stability info
+        if face_info and 'stable_prediction' in face_info:
+            stable_gender, stable_conf = face_info['stable_prediction']
+            if stable_gender:
+                cv2.putText(overlay, f"Stable: {stable_conf:.1%}", (20, 125), 
+                           cv2.FONT_HERSHEY_SIMPLEX, 0.4, (255, 255, 255), 1)
+        
+        cv2.putText(overlay, f"G-Confidence: {gender_confidence:.1%}", (20, 145), 
                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, gender_color, 2)
         
         # Hand detection status
