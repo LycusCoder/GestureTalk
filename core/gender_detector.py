@@ -93,14 +93,16 @@ class GenderDetector:
             'right_cheek': [345, 346, 347, 348, 349, 350, 451, 452]
         }
         
-        # Gender classification rules (simplified)
+        # Gender classification rules (improved - less sensitive to facial expressions)
         self.GENDER_RULES = {
-            'jawline_width_ratio': 0.85,  # Male > 0.85, Female < 0.85
-            'forehead_height_ratio': 0.35,  # Male < 0.35, Female > 0.35  
-            'eye_distance_ratio': 0.42,   # Male < 0.42, Female > 0.42
-            'nose_width_ratio': 0.25,     # Male > 0.25, Female < 0.25
-            'lip_thickness_ratio': 0.08    # Female > 0.08, Male < 0.08
+            'jawline_width_ratio': {'threshold': 0.87, 'weight': 3.0},  # Strong indicator
+            'face_width_height_ratio': {'threshold': 0.78, 'weight': 2.5},  # Stable indicator
+            'eye_distance_ratio': {'threshold': 0.43, 'weight': 1.5},   # Moderate indicator  
+            'nose_width_ratio': {'threshold': 0.24, 'weight': 2.0},     # Good indicator
+            'eyebrow_thickness': {'threshold': 0.025, 'weight': 1.8}    # Stable indicator
         }
+        
+        # Remove lip-based detection to avoid mouth expression sensitivity
     
     def detect_gender(self, frame: np.ndarray) -> Tuple[Optional[str], float, Optional[Dict]]:
         """
