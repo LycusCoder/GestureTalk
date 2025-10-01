@@ -445,12 +445,14 @@ class GestureTalkMainWindow:
         camera_ok = self.camera_handler is not None
         tts_ok = self.tts_handler is not None and self.tts_handler.status.name != 'ERROR'
         model_ok = self.gesture_predictor is not None and self.gesture_predictor.is_loaded
+        gender_ok = self.gender_detector is not None
         
         # Update status text
         status_text = "System Status:\n"
         status_text += f"📹 Camera: {'✅' if camera_ok else '❌'}\n"
         status_text += f"🔊 TTS: {'✅' if tts_ok else '❌'}\n"
-        status_text += f"🤖 Model: {'✅' if model_ok else '❌'}"
+        status_text += f"🤖 Gesture: {'✅' if model_ok else '❌'}\n"
+        status_text += f"👤 Gender: {'✅' if gender_ok else '❌'}"
         
         self.system_status.configure(text=status_text)
         
