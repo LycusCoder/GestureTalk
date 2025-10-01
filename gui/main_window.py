@@ -448,7 +448,7 @@ class GestureTalkMainWindow:
         """Update system status display"""
         # Check system states
         camera_ok = self.camera_handler is not None
-        tts_ok = self.tts_handler is not None and self.tts_handler.status.name != 'ERROR'
+        tts_ok = self.tts_handler is not None and hasattr(self.tts_handler, 'status') and self.tts_handler.status.name != 'ERROR'
         model_ok = self.gesture_predictor is not None and self.gesture_predictor.is_loaded
         gender_ok = self.gender_detector is not None
         
