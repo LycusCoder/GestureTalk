@@ -19,9 +19,11 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from core.hand_tracker import HandTracker
+from core.enhanced_hand_tracker import EnhancedHandTracker
 from core.camera_handler import CameraHandler
 from core.tts_handler import TTSHandler
 from core.gesture_predictor import GesturePredictor
+from core.gender_detector import GenderDetector
 
 
 class GestureTalkMainWindow:
