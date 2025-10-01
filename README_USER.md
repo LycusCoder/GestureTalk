@@ -78,6 +78,13 @@ python app.py
 
 ## 🔧 Troubleshooting
 
+### Gender Detection Tidak Stabil
+Jika gender detection masih berubah-ubah:
+1. **Pastikan wajah frontal** ke kamera (tidak miring)
+2. **Tunggu 5-10 detik** untuk sistem stabilize
+3. **Periksa pencahayaan** - hindari backlight
+4. **Jarak optimal** 50-100cm dari kamera
+
 ### Camera Tidak Terdeteksi
 ```bash
 # Test camera access
